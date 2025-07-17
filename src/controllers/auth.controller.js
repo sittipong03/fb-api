@@ -38,7 +38,7 @@ export async function register(req, res, next) {
         // const result = await prisma.user.create({ data: newUser })
 
         res.json({
-            msg: "Register controller",
+            message: "Register controller",
             result: result
         })
 
@@ -71,9 +71,9 @@ export async function registerYup(req, res, next) {
             lastName
         }
 
-        const result = await createUser(newUser)
+        await createUser(newUser)
 
-        res.json({msg : "Register successful" , result })
+        res.json({message : "Register successful"})
 
     } catch (error) {
         next(error)
@@ -105,33 +105,21 @@ export const login = async (req, res, next) => {
         algorithm : "HS256" ,
         expiresIn : "15d"
     })
+    // destructer เอาอันที่ไม่ใช้ออก
+    const {password :pw , createdAt , updatedAt , ...userData } = foundUser
 
     res.json({
-        msg: "login successful",
-        token : token
+        message: "login successful",
+        token : token,
+        user : userData
     })
 
 }
 
 export const getMe = async (req, res, next) => {
-    let numUser = await prisma.user.count()
-    createError(403, "error")
-    res.json({
-        msg: "get me controller"
-        // numUser : numUser
-    })
+    res.json({user : req.user})
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
